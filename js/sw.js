@@ -1,4 +1,4 @@
-// service-worker.js
+// service-worker.js, chatgpt'ed the whole thing lmao
 
 // Install service worker
 self.addEventListener('install', event => {
@@ -9,17 +9,15 @@ self.addEventListener('install', event => {
         './index.html',
         './css/styles.css',
         './js/script.js',
-        // Add paths to other critical assets
       ]))
   );
 });
 
 // Activate service worker
 self.addEventListener('activate', event => {
-  // Optional: Clean up old caches or perform other tasks
 });
 
-// Fetch event: intercept network requests
+
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)

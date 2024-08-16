@@ -5,35 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Streamflix Mobile</title>
+    <meta name="description" content="Streamflix Mobile - Stream your favorite movies and TV shows on the go.">
+    <meta name="keywords" content="movies, TV shows, streaming, entertainment, Streamflix">
+    <meta name="author" content="Streamflix Team">
+    <meta name="theme-color" content="#000000">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="manifest" href="/manifest.json">
-
     <link rel="stylesheet" href="/css/style.css">
     
 </head>
 
 <body>
 
-    <div class="sidebar">
-        <a href="#" onclick="loadMovies()"><i class="fas fa-film"></i></a>
-        <a href="#" onclick="loadTVShows()"><i class="fas fa-tv"></i></a>
-        <a href="#" onclick="toggleSearch()"><i class="fas fa-search"></i></a>
-        <a href="#" onclick="loadWatchlist('both')"><i class="fas fa-heart"></i></a>
+    <div class="sidebar" aria-label="Main navigation">
+        <a href="#" onclick="loadMovies()" aria-label="Movies"><i class="fas fa-film"></i></a>
+        <a href="#" onclick="loadTVShows()" aria-label="TV Shows"><i class="fas fa-tv"></i></a>
+        <a href="#" onclick="toggleSearch()" aria-label="Search"><i class="fas fa-search"></i></a>
+        <a href="#" onclick="loadWatchlist('both')" aria-label="Watchlist"><i class="fas fa-heart"></i></a>
     </div>
     <div class="container">
-        <div class="search-container" id="search-container">
+        <div class="search-container" id="search-container" aria-label="Search movies and TV shows">
             <input type="text" id="search-input" class="search-input" placeholder="Search movies and TV shows..."
-                oninput="liveSearch()" onsubmit="searchMovies()">
-            <button onclick="searchMovies()" class="search-btn"><i class="fas fa-search search-icon"></i>Search</button>
+                oninput="liveSearch()" onsubmit="searchMovies()" aria-label="Search input">
+            <button onclick="searchMovies()" class="search-btn" aria-label="Search"><i class="fas fa-search search-icon"></i>Search</button>
         </div>
 
-        <div class="movie-list" id="movie-list">
+        <div class="movie-list" id="movie-list" aria-label="List of movies and TV shows">
             <!-- Movie cards will be inserted here -->
         </div>
 
-        <div class="movie-details" id="movie-details">
+        <div class="movie-details" id="movie-details" aria-label="Movie details">
             <!-- Movie details will be displayed here -->
-            <button class="back-btn" id="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
+            <button class="back-btn" id="back-btn" onclick="goBack()" aria-label="Back to list"><i class="fas fa-arrow-left"></i></button>
         </div>
     </div>
 

@@ -11,7 +11,7 @@ let searchTimeout;
 let watchlistActive = false;
 
 
-// Function to fetch movies
+// fetch movies
 function fetchMovies() {
     fetch(`https://api.themoviedb.org/3/discover/${currentContentType}?api_key=${apiKey}&page=${Math.floor(currentMovieIndex / 20) + 1}`)
         .then(response => response.json())
@@ -22,17 +22,16 @@ function fetchMovies() {
         .catch(error => console.error('Error fetching movies:', error));
 }
 
-// Function to display movies
 function displayMovies(movies) {
     movies.forEach((movie, index) => {
-        // Check if movie with same ID already exists
+        // stop duplicate movies
         if (document.getElementById(`movie-${movie.id}`)) {
-            return; // Skip if movie card already exists
+            return;
         }
 
         const movieCard = document.createElement('div');
         movieCard.classList.add('movie-card');
-        movieCard.id = `movie-${movie.id}`; // Set unique ID for each movie card
+        movieCard.id = `movie-${movie.id}`; // id to check duplicates
 
         if (movie.poster_path === null) {
             var src = '/assets/tmdb_placeholder_400x600.png'
@@ -60,11 +59,11 @@ function showNotification(message) {
 
     setTimeout(() => {
         notification.style.opacity = '0';
-        setTimeout(() => notification.remove(), 300); // Remove after fade out
-    }, 2000); // Show for 2 seconds
+        setTimeout(() => notification.remove(), 300); // rmove after fade out
+    }, 2000);
 }
 
-// Function to update the watchlist button text
+
 function updateWatchlistButton(button, inWatchlist) {
     if (inWatchlist) {
         button.innerHTML = '<i class="fas fa-minus"></i> Remove from Watchlist';
@@ -79,11 +78,11 @@ function closeFullscreenIframe() {
     baButon.style.display = 'block';
     const fullscreenIframe = document.getElementById('fullscreen-iframe');
     fullscreenIframe.classList.remove('show-iframe');
-    fullscreenIframe.src = ''; // Clear the src to stop the video
-    document.body.style.overflow = 'auto'; // Re-enable scrolling on body
+    fullscreenIframe.src = '';
+    document.body.style.overflow = 'auto'; // re-enable scrolling on body
 }
 
-// Function to add item to watchlist
+
 function addToWatchlist(tmdbId, type) {
     const watchlistKey = type === 'movie' ? 'movieWatchlist' : 'tvWatchlist';
     const watchlist = JSON.parse(localStorage.getItem(watchlistKey)) || [];
@@ -98,7 +97,7 @@ function addToWatchlist(tmdbId, type) {
     }
 }
 
-// Function to remove item from watchlist
+
 function removeFromWatchlist(tmdbId, type) {
     const watchlistKey = type === 'movie' ? 'movieWatchlist' : 'tvWatchlist';
     let watchlist = JSON.parse(localStorage.getItem(watchlistKey)) || [];
@@ -111,8 +110,7 @@ function removeFromWatchlist(tmdbId, type) {
     updateWatchlistButton(button, false);
 }
 
-// Function to fetch and display watchlist items
-// Function to fetch and display watchlist items
+
 function loadWatchlist(type) {
     let movieWatchlist = [];
     let tvWatchlist = [];
@@ -151,8 +149,8 @@ function loadWatchlist(type) {
         movieList.innerHTML = '<p>Your watchlist is empty.</p>';
     }
 }
-let currentSeason = 1; // Default to season 1
-let currentEpisode = 1; // Default to episode 1
+let currentSeason = 1; // default season and ep 1
+let currentEpisode = 1;
 
 function showMovieDetails(movieId) {
     fetch(`https://api.themoviedb.org/3/${currentContentType}/${movieId}?api_key=${apiKey}`)
@@ -184,28 +182,25 @@ function showMovieDetails(movieId) {
                 <button class="back-btn-iframe" id="back-btn-iframe" onclick="closeFullscreenIframe()"><i class="fas fa-arrow-left"></i></button>
             `;
 
-            // Fetch and populate the seasons dropdown
             if (currentContentType === 'tv') {
                 fetchSeasons(data.id);
             }
 
-            // Function to open fullscreen iframe
             const fullscreenIframe = document.getElementById('fullscreen-iframe');
             openFullscreenIframe = () => {
                 const baButton = document.getElementById('back-btn-iframe');
                 baButton.style.display = 'block';
                 let url;
                 if (currentContentType === 'movie') {
-                    url = `https://watch.streamflix.one/movie/${data.id}/watch`;
+                    url = `https://watch.streamflix.one/movie/${data.id}/watch?server=1`;
                 } else if (currentContentType === 'tv') {
-                    url = `https://watch.streamflix.one/tv/${data.id}/watch?s=${currentSeason}&e=${currentEpisode}`;
+                    url = `https://watch.streamflix.one/tv/${data.id}/watch?server=1&s=${currentSeason}&e=${currentEpisode}`;
                 }
                 fullscreenIframe.src = url;
                 fullscreenIframe.classList.add('show-iframe');
-                document.body.style.overflow = 'hidden'; // Disable scrolling on body
+                document.body.style.overflow = 'hidden'; // disable scrolling on body
             };
 
-            // Check if the movie is already in the watchlist and update the button
             const watchlistKey = currentContentType === 'movie' ? 'movieWatchlist' : 'tvWatchlist';
             const watchlist = JSON.parse(localStorage.getItem(watchlistKey)) || [];
             const inWatchlist = watchlist.includes(String(data.id));
@@ -220,16 +215,16 @@ function fetchSeasons(tvId) {
         .then(response => response.json())
         .then(data => {
             const seasonSelect = document.getElementById('season-select');
-            seasonSelect.innerHTML = ''; // Clear any existing options
+            seasonSelect.innerHTML = '';
             data.seasons.forEach(season => {
-                if (season.season_number > 0) { // Skip Season 0
+                if (season.season_number > 0) { // skip season 0, aka specials
                     const option = document.createElement('option');
                     option.value = season.season_number;
                     option.textContent = `Season ${season.season_number}`;
                     seasonSelect.appendChild(option);
                 }
             });
-            fetchEpisodes(tvId, 1); // Fetch episodes for Season 1 by default
+            fetchEpisodes(tvId, 1);
         })
         .catch(error => console.error('Error fetching seasons:', error));
 }
@@ -244,7 +239,7 @@ function fetchEpisodes(tvId, seasonNumber) {
         .then(data => {
             const episodesContainer = document.getElementById('episodes-container');
             episodesContainer.innerHTML = '';
-            const defaultImage = 'path/to/default_image.jpg'; // Placeholder image
+            const defaultImage = 'assets/default_image.jpg'; // placeholder image havent found yet ;(
             const backgroundImage = `https://image.tmdb.org/t/p/w500${data.poster_path}`; // TV show background image
 
             data.episodes.forEach((episode, index) => {
@@ -266,7 +261,6 @@ function fetchEpisodes(tvId, seasonNumber) {
                 episodesContainer.appendChild(episodeDiv);
             });
 
-            // Set default selected episode to the first one
             currentEpisode = 1;
             if (episodesContainer.firstChild) {
                 episodesContainer.firstChild.classList.add('selected');
@@ -275,10 +269,6 @@ function fetchEpisodes(tvId, seasonNumber) {
         .catch(error => console.error('Error fetching episodes:', error));
 }
 
-// CSS for draggable slider is already provided in the previous answer
-
-
-// Function to go back to the movie list
 function goBack() {
     movieDetails.style.display = 'none';
     movieList.style.display = 'flex';
@@ -287,7 +277,6 @@ function goBack() {
 
 }
 
-// Function to load movies
 function loadMovies() {
     currentContentType = 'movie';
     currentMovieIndex = 0;
@@ -301,7 +290,6 @@ function loadMovies() {
 
 }
 
-// Function to load TV shows
 function loadTVShows() {
     currentContentType = 'tv';
     currentMovieIndex = 0;
@@ -315,7 +303,6 @@ function loadTVShows() {
 
 }
 
-// Function to toggle search container
 function toggleSearch() {
     currentMovieIndex = 0;
     movies = [];
@@ -326,7 +313,6 @@ function toggleSearch() {
 
 }
 
-// Function to search for movies and TV shows
 function searchMovies() {
     const query = searchInput.value.trim();
     if (query) {
@@ -340,7 +326,6 @@ function searchMovies() {
     }
 }
 
-// Function for live search
 function liveSearch() {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(searchMovies, 500);
@@ -348,13 +333,11 @@ function liveSearch() {
 
 
 
-// Event listener for infinite scroll
 window.addEventListener('scroll', () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200 && movieList.style.display !== 'none' && watchlistActive === false) {
         fetchMovies();
     }
 });
 
-// Initial fetch
 fetchMovies();
 backBtn.style.display = 'none';
