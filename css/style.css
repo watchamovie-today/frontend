@@ -1,0 +1,435 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
+
+body {
+    font-family: 'Rubik', sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+.back-btn-iframe {
+    display: none;
+    position: fixed;
+    top: 25px;
+    left: 20px;
+    z-index: 10000;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn-iframe:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.notification {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #444;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.fullscreen-iframe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: #000;
+    z-index: 9999;
+    display: none;
+    /* Initially hidden */
+}
+
+.fullscreen-iframe.show-iframe {
+    display: block;
+}
+
+.container {
+    padding: 20px;
+    padding-left: 90px;
+}
+
+.sidebar {
+    width: 60px;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 110px 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.sidebar a:hover {
+    color: #404040;
+}
+
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    margin-left: 80px;
+    flex-grow: 1;
+}
+
+.movie-card {
+    margin: 10px;
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.3s, opacity 0.3s;
+    opacity: 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.movie-card:hover {
+    transform: scale(1.1);
+}
+
+.movie-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px 10px 0 0;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #333;
+    border-radius: 5px;
+    margin: 20px auto;
+    width: 60%;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 14px;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    outline: none;
+    font-family: 'Rubik', sans-serif;
+}
+
+.search-input::placeholder {
+    color: #888;
+}
+
+.search-btn {
+    padding: 8px;
+    font-size: 14px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: #5a5a5a;
+}
+
+.search-icon {
+    margin-right: 8px;
+}
+
+/* WebKit-based browsers */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #333;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 10px;
+    border: 3px solid #333;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #444 #333;
+}
+
+/* Optional: Custom scrollbar styles for specific elements */
+.container {
+    overflow-y: auto;
+}
+
+.movie-list {
+    overflow-y: auto;
+}
+
+.search-container {
+    overflow-x: auto;
+}
+.episodes-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+    margin-top: 20px;
+    border-radius: 10px;
+    background-color: #111;
+    scroll-behavior: smooth;
+}
+
+.episode {
+    min-width: 200px;
+    margin-right: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #222;
+    cursor: grab;
+    user-select: none; /* Prevent text selection */
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
+.episode img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #333;
+}
+
+.episode p {
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+}
+
+.season-container {
+    margin-top: 20px;
+}
+
+#season-select {
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Rubik', sans-serif;
+}
+
+#season-select option {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Styles for draggable behavior */
+.episodes-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.episode {
+    cursor: pointer; /* Change cursor to pointer */
+    transition: border-color 0.3s ease; /* Smooth transition for border color */
+}
+
+.episode.selected {
+    border: 2px solid #ffffff; /* White border for selected episode */
+}
+
+
+@media (max-width: 768px) {
+    .episode {
+        min-width: 150px;
+    }
+}
+
+.movie-details {
+    display: none;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 20px;
+    padding: 20px;
+    position: relative;
+}
+
+.movie-details img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    max-height: 500px;
+}
+
+.movie-details .info {
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.movie-details .info h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.movie-details .info p {
+    margin-bottom: 10px;
+}
+
+.movie-details .info strong {
+    font-weight: 500;
+}
+
+.back-btn,
+.watch-now-btn,
+.watchlist-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0d0d0d;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover,
+.watch-now-btn:hover,
+.watchlist-btn:hover {
+    background-color: #5a5a5a;
+}
+
+.back-btn i,
+.watch-now-btn i,
+.watchlist-btn i {
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 60px;
+        padding: 10px 0;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 15px;
+    }
+
+    .sidebar a {
+        font-size: 20px;
+    }
+
+    .movie-list {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .movie-card {
+        width: 45%;
+        margin: 5px;
+    }
+
+    .search-container {
+        width: 90%;
+        margin: 10px auto;
+        padding: 5px;
+    }
+
+    .search-input {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .search-btn {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .back-btn,
+    .watch-now-btn,
+    .watchlist-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .movie-details {
+        display: contents;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .movie-details img {
+        max-width: 80%;
+        max-height: 300px;
+    }
+
+    .movie-details .info {
+        max-width: 90%;
+        padding: 10px;
+    }
+
+    .movie-details .info h2 {
+        font-size: 20px;
+    }
+}
+
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 20px;
+    padding: 5px 10px;
+}
