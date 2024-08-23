@@ -158,7 +158,17 @@ function showMovieDetails(movieId) {
         .then(data => {
             movieList.style.display = 'none';
             movieDetails.style.display = window.innerWidth < 768 ? 'block' : 'flex';
+            let season_add;
             backBtn.style.display = 'block';
+            if (currentContentType === "tv") {
+                season_add = `<div class="season-container">
+                        <label for="season-select">Select Season:</label>
+                        <select id="season-select" onchange="fetchEpisodes(${data.id})"></select>
+                    </div>                    <div class="episodes-container" id="episodes-container"></div>
+`
+            } else {
+                season_add = ``
+            }
             movieDetails.innerHTML = `
                 <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
                 <img src="https://image.tmdb.org/t/p/w500${data.poster_path}" alt="${data.title || data.name}">
@@ -172,11 +182,7 @@ function showMovieDetails(movieId) {
                         <button class="watchlist-btn" data-id="${data.id}" data-type="${currentContentType}">
                             <i class="fas fa-plus"></i>Add to Watchlist</button>
                     </div>
-                    <div class="season-container">
-                        <label for="season-select">Select Season:</label>
-                        <select id="season-select" onchange="fetchEpisodes(${data.id})"></select>
-                    </div>
-                    <div class="episodes-container" id="episodes-container"></div>
+                    ${season_add}
                 </div>
                 <iframe id="fullscreen-iframe" class="fullscreen-iframe" frameborder="0" allowfullscreen></iframe>
                 <button class="back-btn-iframe" id="back-btn-iframe" onclick="closeFullscreenIframe()"><i class="fas fa-arrow-left"></i></button>
@@ -192,9 +198,9 @@ function showMovieDetails(movieId) {
                 baButton.style.display = 'block';
                 let url;
                 if (currentContentType === 'movie') {
-                    url = `https://watch.streamflix.one/movie/${data.id}/watch?server=1`;
+                    url = `https://vidsrc.rip/embed/movie/${data.id}`;
                 } else if (currentContentType === 'tv') {
-                    url = `https://watch.streamflix.one/tv/${data.id}/watch?server=1&s=${currentSeason}&e=${currentEpisode}`;
+                    url = `https://vidsrc.rip/embed/tv/${data.id}/${currentSeason}/${currentEpisode}`;
                 }
                 fullscreenIframe.src = url;
                 fullscreenIframe.classList.add('show-iframe');
